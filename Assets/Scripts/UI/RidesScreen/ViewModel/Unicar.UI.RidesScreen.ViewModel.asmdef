@@ -1,0 +1,16 @@
+{
+    "name": "Unicar.UI.RidesScreen.ViewModel",
+    "rootNamespace": "Unicar.UI.RidesScreen.ViewModel",
+    "references": [
+        "GUID:e0f8c34ea46c1b24aa68ed3e0f465a13"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

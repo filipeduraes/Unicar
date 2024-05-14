@@ -1,0 +1,16 @@
+{
+    "name": "Unicar.UI.InfoScreen.ViewModel",
+    "rootNamespace": "Unicar.UI.InfoScreen.ViewModel",
+    "references": [
+        "GUID:df74e264217c3644f9738becae15ec04"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
