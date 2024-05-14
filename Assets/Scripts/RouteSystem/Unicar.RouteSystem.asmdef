@@ -1,0 +1,16 @@
+{
+    "name": "Unicar.RouteSystem",
+    "rootNamespace": "Unicar.RouteSystem",
+    "references": [
+        "GUID:8ccbac9d153e16849955f979789ff5fb"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
