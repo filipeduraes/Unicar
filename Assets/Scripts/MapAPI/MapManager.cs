@@ -19,10 +19,19 @@ namespace Unicar.MapAPI
         public static async UniTask<Texture2D> GetMapFromCoordinateAsync(Vector3 coordinate)
         {
             using HttpClient client = await GetClientAsync();
-            HttpResponseMessage result = await client.GetAsync($"https://tile.googleapis.com/v1/2dtiles/{coordinate.z}/{coordinate.x}/{coordinate.y}?session={_sessionToken.Session}&key={APIKey}&orientation=0");
-            string resultJson = await result.Content.ReadAsStringAsync();
+            HttpResponseMessage result = await client.GetAsync($"https://tile.googleapis.com/v1/2dtiles/{coordinate.z}/{coordinate.x}/{coordinate.y}?session={_sessionToken.session}&key={APIKey}&orientation=0");
 
-            return null;
+            if (result.StatusCode == HttpStatusCode.BadRequest)
+            {
+                Debug.LogError(await result.Content.ReadAsStringAsync());
+                return null;
+            }
+            
+            byte[] buffer = await result.Content.ReadAsByteArrayAsync();
+            Texture2D tile = new(_sessionToken.tileWidth, _sessionToken.tileHeight);
+            tile.LoadImage(buffer);
+
+            return tile;
         }
 
         private static async UniTask<HttpClient> GetClientAsync()
@@ -37,7 +46,7 @@ namespace Unicar.MapAPI
         {
             _client = new HttpClient();
             
-            GetSessionTokenModel model = new("roadmap", "en-US", "US");
+            GetSessionTokenModel model = new("roadmap", "en-US", "US", "scaleFactor2x");
             HttpContent httpContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
