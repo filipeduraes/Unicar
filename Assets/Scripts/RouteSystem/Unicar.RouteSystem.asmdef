@@ -2,7 +2,8 @@
     "name": "Unicar.RouteSystem",
     "rootNamespace": "Unicar.RouteSystem",
     "references": [
-        "GUID:8ccbac9d153e16849955f979789ff5fb"
+        "GUID:8ccbac9d153e16849955f979789ff5fb",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
