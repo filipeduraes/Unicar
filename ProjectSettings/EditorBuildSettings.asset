@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/ScreenManager.unity
+    guid: 00ed54bf3e99e0a49a1e76bc6a225812
+  - enabled: 1
+    path: Assets/Scenes/LoginScreen.unity
+    guid: 183a7838eb2dd8f4b8ae22a0cb056e9e
+  - enabled: 1
     path: Assets/Scenes/RegisterScreen.unity
     guid: 1511fc7d54b2d3f4d9ab9be7bf8f2883
   - enabled: 1
@@ -17,4 +23,5 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/RidesScreen.unity
     guid: 07deda1684eddfc439a5f9a9c73979fc
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 02d9108241b47544a84a600ddcaf5b47, type: 2}
