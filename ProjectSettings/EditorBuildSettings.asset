@@ -21,4 +21,5 @@ EditorBuildSettings:
     path: Assets/Scenes/RidesScreen.unity
     guid: 07deda1684eddfc439a5f9a9c73979fc
   m_configObjects:
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 40999cc753423ba4d8e3edcc6ea7a696, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 02d9108241b47544a84a600ddcaf5b47, type: 2}
