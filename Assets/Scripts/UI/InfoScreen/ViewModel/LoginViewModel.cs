@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using Unicar.Persistence;
 using UnityEngine;
 
 namespace Unicar.UI.InfoScreen.ViewModel
@@ -19,7 +20,15 @@ namespace Unicar.UI.InfoScreen.ViewModel
 
         private void ValidateLogin(LoginRequestInfo loginRequestInfo)
         {
-            
+            _ = ValidateLoginAsync(loginRequestInfo);
+        }
+
+        private async UniTask ValidateLoginAsync(LoginRequestInfo loginRequestInfo)
+        {
+            ProfileCredentials profileCredentials = new(loginRequestInfo.Email, loginRequestInfo.Password);
+            ProfileData profileData = await PersistenceManager.FindProfileWithDataAsync(profileCredentials);
+
+            loginScreen.ReceiveLoginSuccess(profileData != null);
         }
     }
 }

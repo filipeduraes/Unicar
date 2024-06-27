@@ -41,6 +41,9 @@ namespace Unicar.Persistence
 
         private static string GetProfileFilePath()
         {
+            if (!Directory.Exists(ProfileDataPath))
+                Directory.CreateDirectory(ProfileDataPath);
+            
             string[] paths = Directory.GetFiles(ProfileDataPath);
             return $"{ProfileDataPath}{Path.DirectorySeparatorChar}{paths.Length}";
         }

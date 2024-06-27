@@ -205,7 +205,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 34036722}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 555960030}
+        m_TargetAssemblyTypeName: LoginScreen, Unicar.UI.InfoScreen.View
+        m_MethodName: RequestLogin
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &34036722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -512,6 +524,7 @@ GameObject:
   m_Component:
   - component: {fileID: 555960031}
   - component: {fileID: 555960030}
+  - component: {fileID: 555960032}
   m_Layer: 0
   m_Name: View
   m_TagString: Untagged
@@ -533,6 +546,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   emailInput: {fileID: 1455676900}
   passwordInput: {fileID: 1681241377}
+  onLoginSuccess:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1398340612}
+        m_TargetAssemblyTypeName: Unicar.ScreenFlow.ScreenLoader, Unicar.ScreenFlow
+        m_MethodName: SendLoadRequest
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onLoginFailed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &555960031
 Transform:
   m_ObjectHideFlags: 0
@@ -548,6 +579,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &555960032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 555960029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 186e3973806d49f3b3a7ba0283fb0eef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loginScreen: {fileID: 555960030}
 --- !u!1 &1060067849
 GameObject:
   m_ObjectHideFlags: 0
@@ -684,6 +728,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1060067849}
   m_CullTransparentMesh: 1
+--- !u!1 &1398340611
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1398340613}
+  - component: {fileID: 1398340612}
+  m_Layer: 0
+  m_Name: RidesScreenLoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1398340612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398340611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3189906ca146a48070ea67f252bd29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  requestedIndex: 3
+--- !u!4 &1398340613
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398340611}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1455676898
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1335,3 +1424,4 @@ SceneRoots:
   - {fileID: 1742845703}
   - {fileID: 555960031}
   - {fileID: 98849613}
+  - {fileID: 1398340613}

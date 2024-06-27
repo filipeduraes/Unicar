@@ -2,7 +2,9 @@
     "name": "Unicar.UI.InfoScreen.ViewModel",
     "rootNamespace": "Unicar.UI.InfoScreen.ViewModel",
     "references": [
-        "GUID:df74e264217c3644f9738becae15ec04"
+        "GUID:df74e264217c3644f9738becae15ec04",
+        "GUID:3c943961e9d24e56a9ad9f817f67173f",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
