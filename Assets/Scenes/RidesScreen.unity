@@ -204,9 +204,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e01710b25df7fc49b1255e3b08e89ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  x: 510
-  y: 810
-  zoom: 11
+  latitude: -18.2411
+  longitude: -43.6048
+  zoom: 14
   rawImage: {fileID: 840950314}
 --- !u!1 &840950312
 GameObject:
