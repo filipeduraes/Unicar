@@ -18,7 +18,6 @@ namespace Unicar.MapAPI
             client.DefaultRequestHeaders.Add("User-Agent", "Unicar / 0.1 development");
 
             string requestUri = $"http://tile.openstreetmap.org/{zoomLevel}/{tile.x}/{tile.y}.png";
-            Debug.Log(requestUri);
             
             HttpResponseMessage response = await client.GetAsync(requestUri);
             byte[] image = await response.Content.ReadAsByteArrayAsync();
@@ -37,7 +36,7 @@ namespace Unicar.MapAPI
 
             return new TilePoint(tileX, tileY, zoomLevel);
         }
-
+        
         public static long ConvertLongitudeToTileX(double longitude, int zoom)
         {
             return (long) Math.Floor((longitude + 180.0) / 360.0 * (1 << zoom));
@@ -60,30 +59,6 @@ namespace Unicar.MapAPI
         {
             double n = Math.PI - 2.0 * Math.PI * y / (1 << zoom);
             return 180.0 / Math.PI * Math.Atan(0.5 * (Math.Exp(n) - Math.Exp(-n)));
-        }
-    }
-
-    public struct TilePoint
-    {
-        public readonly long x;
-        public readonly long y;
-        public readonly int zoom;
-
-        public TilePoint(long x, long y, int zoom)
-        {
-            this.x = x;
-            this.y = y;
-            this.zoom = zoom;
-        }
-
-        public static TilePoint operator +(TilePoint aTilePoint, TilePoint bTilePoint)
-        {
-            return new TilePoint(aTilePoint.x + bTilePoint.x, aTilePoint.y + bTilePoint.y, aTilePoint.zoom);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(zoom, x, y);
         }
     }
 }
