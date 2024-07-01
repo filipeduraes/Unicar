@@ -10,7 +10,7 @@ namespace Unicar.MapAPI
         public static async UniTask<Texture2D> GetMapFromCoordinate(TilePoint tile, int zoomLevel)
         {
             using HttpClient client = new();
-            client.DefaultRequestHeaders.Add("User-Agent", "Unicar / 0.1 development");
+            client.DefaultRequestHeaders.Add("User-Agent", $"Unicar / {Application.version} development");
 
             string requestUri = $"http://tile.openstreetmap.org/{zoomLevel}/{tile.x}/{tile.y}.png";
             

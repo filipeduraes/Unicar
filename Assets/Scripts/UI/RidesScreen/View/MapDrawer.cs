@@ -21,14 +21,12 @@ namespace Unicar.UI.RidesScreen.View
         [Header("Navigation")]
         [SerializeField] private float navigationVelocity;
         [SerializeField] private bool enableMap = false;
+        [SerializeField] private Vector2 scaleRange = new(0.8f, 1.2f);
 
         private readonly Dictionary<int, Dictionary<TilePoint, Texture2D>> _cacheTextures = new();
-        private MapCell[,] _tileImages;
         private CancellationTokenSource _cancellationTokenSource;
-        private TilePoint _initialTile;
+        private MapCell[,] _tileImages;
         private Vector2Int _closestTile;
-        private Vector2 _direction;
-        private int _zoomOffset = 0;
 
         private IEnumerator Start()
         {
@@ -51,53 +49,38 @@ namespace Unicar.UI.RidesScreen.View
             _cancellationTokenSource.Dispose();
         }
 
-        private void Update()
+        public void MoveMap(Vector2 inputDelta)
         {
-            float horizontal = Input.GetAxis("Horizontal");
-            float vertical = Input.GetAxis("Vertical");
-            _direction = new Vector2(horizontal, vertical);
+            foreach (MapCell tileImage in _tileImages)
+                tileImage.Image.rectTransform.localPosition += (Vector3) inputDelta;
 
-            bool zoomIn = Input.GetMouseButtonDown(0);
-            bool zoomOut = Input.GetMouseButtonDown(1);
-
-            if (zoomIn || zoomOut)
-                _zoomOffset = zoomIn ? 1 : -1;
-        }
-
-        private void FixedUpdate()
-        {
-            MoveMap(_direction);
-
-            if (_zoomOffset != 0)
+            Vector2Int newClosestTile = GetClosestTile();
+            
+            if (newClosestTile != _closestTile)
             {
-                AddZoom(_zoomOffset);
-                _zoomOffset = 0;
+                Vector2Int distance = newClosestTile - _closestTile;
+                UpdateTiles(distance.x, distance.y);
             }
         }
 
-        public void MoveMap(Vector2 inputDirection)
+        public void AddZoom(float zoomOffset)
         {
-            if (inputDirection.sqrMagnitude >= 0.01f)
-            {
-                Vector3 velocity = inputDirection.normalized * navigationVelocity;
-
-                foreach (MapCell tileImage in _tileImages)
-                    tileImage.Image.rectTransform.localPosition += velocity;
-
-                Vector2Int newClosestTile = GetClosestTile();
-                
-                if (newClosestTile != _closestTile)
-                {
-                    Vector2Int distance = newClosestTile - _closestTile;
-                    UpdateTiles(distance.x, distance.y);
-                }
-            }
+            mapCenter.localScale += (Vector3) (Vector2.one * zoomOffset);
+            
+            if(mapCenter.localScale.x > scaleRange.y)
+                ChangeZoomLevel(1);
+            else if(mapCenter.localScale.x < scaleRange.x)
+                ChangeZoomLevel(-1);
         }
 
-        public void AddZoom(int zoomOffset)
+        private void ChangeZoomLevel(int zoomOffset)
         {
+            mapCenter.localScale = (zoomOffset < 0 ? scaleRange.y : scaleRange.x) * Vector2.one;
+            
             int centerIndex = gridSize / 2;
-            int initialZoom = _tileImages[centerIndex, centerIndex].TilePoint.zoom;
+            MapCell centerCell = _tileImages[centerIndex, centerIndex];
+            int initialZoom = centerCell.TilePoint.zoom;
+            
             int newZoom = initialZoom + zoomOffset;
             newZoom = Mathf.Clamp(newZoom, 1, 18);
 
@@ -255,14 +238,11 @@ namespace Unicar.UI.RidesScreen.View
 
         private void GenerateTileImages()
         {
-            _initialTile = MapManager.ConvertCoordinateToTile(latitude, longitude, zoomLevel);
+            TilePoint initialTile = MapManager.ConvertCoordinateToTile(latitude, longitude, zoomLevel);
             _tileImages = new MapCell[gridSize, gridSize];
             
             int gridCenter = gridSize / 2;
-            Vector3[] worldCorners = new Vector3[4];
-            mapCenter.GetWorldCorners(worldCorners);
-
-            float size = worldCorners[2].x - worldCorners[0].x;
+            float size = Screen.width;
 
             for (int y = 0; y < gridSize; y++)
             {
@@ -276,7 +256,8 @@ namespace Unicar.UI.RidesScreen.View
                     
                     Vector2Int offset = new Vector2Int(x, y) - Vector2Int.one * gridCenter;
                     rawImage.rectTransform.anchoredPosition = new Vector2(offset.x, -offset.y) * size;
-                    TilePoint tilePoint = _initialTile + new TilePoint(offset.x, offset.y, _initialTile.zoom);
+                    rawImage.transform.localScale = Vector2.one;
+                    TilePoint tilePoint = initialTile + new TilePoint(offset.x, offset.y, initialTile.zoom);
 
                     _tileImages[x, y].Image = rawImage;
                     _tileImages[x, y].SetTilePoint(tilePoint);

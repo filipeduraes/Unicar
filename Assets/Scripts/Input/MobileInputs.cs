@@ -31,7 +31,7 @@ namespace Unicar.Inputs
             ""actions"": [
                 {
                     ""name"": ""Touch0"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""75d4f969-8d02-480f-808a-af0153a2c8d2"",
                     ""expectedControlType"": ""Touch"",
                     ""processors"": """",
@@ -40,7 +40,7 @@ namespace Unicar.Inputs
                 },
                 {
                     ""name"": ""Touch1"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""cf0b66a4-6347-448b-9efc-5186382ab962"",
                     ""expectedControlType"": ""Touch"",
                     ""processors"": """",
