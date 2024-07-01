@@ -1,11 +1,7 @@
 {
-    "name": "Unicar.UI.RidesScreen.View",
-    "rootNamespace": "Unicar.UI.RidesScreen.View",
+    "name": "Unicar.Inputs",
+    "rootNamespace": "",
     "references": [
-        "GUID:8ccbac9d153e16849955f979789ff5fb",
-        "GUID:6055be8ebefd69e48b49212b09b47b2f",
-        "GUID:f51ebe6a0ceec4240a699833d6309b23",
-        "GUID:1544709edb4a6f14498999a3295882c4",
         "GUID:75469ad4d38634e559750d17036d5f7c"
     ],
     "includePlatforms": [],

@@ -1,0 +1,54 @@
+{
+    "name": "MobileInputs",
+    "maps": [
+        {
+            "name": "Touch",
+            "id": "b64d526b-56b3-4935-8b1a-99d002f6c695",
+            "actions": [
+                {
+                    "name": "Touch0",
+                    "type": "PassThrough",
+                    "id": "75d4f969-8d02-480f-808a-af0153a2c8d2",
+                    "expectedControlType": "Touch",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Touch1",
+                    "type": "PassThrough",
+                    "id": "cf0b66a4-6347-448b-9efc-5186382ab962",
+                    "expectedControlType": "Touch",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c22f99dc-ac91-4edf-a2b9-e754da03b8d3",
+                    "path": "<Touchscreen>/touch0",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Touch0",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e5b776fc-2107-404d-9dec-a6710a548699",
+                    "path": "<Touchscreen>/touch1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Touch1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

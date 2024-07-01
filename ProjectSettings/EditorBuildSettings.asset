@@ -14,7 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/RegisterScreen.unity
     guid: 1511fc7d54b2d3f4d9ab9be7bf8f2883
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/RideInfoScreen.unity
     guid: e5084be6740599d4c909cdd0d0cd7bb7
   - enabled: 1

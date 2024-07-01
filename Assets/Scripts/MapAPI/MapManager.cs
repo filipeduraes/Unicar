@@ -2,16 +2,11 @@ using System;
 using System.Net.Http;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Unicar.MapAPI
 {
-    public class MapManager : MonoBehaviour
+    public static class MapManager
     {
-        [SerializeField] private RawImage rawImage;
-        
-        private const string ApiUrl = "https://api.openstreetmap.org/";
-        
         public static async UniTask<Texture2D> GetMapFromCoordinate(TilePoint tile, int zoomLevel)
         {
             using HttpClient client = new();

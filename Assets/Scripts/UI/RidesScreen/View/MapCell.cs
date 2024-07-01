@@ -1,5 +1,4 @@
-﻿using TMPro;
-using Unicar.MapAPI;
+﻿using Unicar.MapAPI;
 using UnityEngine.UI;
 
 namespace Unicar.UI.RidesScreen.View
