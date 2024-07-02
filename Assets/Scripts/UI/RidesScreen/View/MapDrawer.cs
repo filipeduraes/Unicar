@@ -23,7 +23,7 @@ namespace Unicar.UI.RidesScreen.View
         [SerializeField] private bool enableMap = false;
         [SerializeField] private Vector2 scaleRange = new(0.8f, 1.2f);
 
-        private readonly Dictionary<int, Dictionary<TilePoint, Texture2D>> _cacheTextures = new();
+        private readonly Dictionary<TilePoint, Texture2D> _cacheTextures = new();
         private CancellationTokenSource _cancellationTokenSource;
         private MapCell[,] _tileImages;
         private Vector2Int _closestTile;
@@ -51,13 +51,7 @@ namespace Unicar.UI.RidesScreen.View
 
         public void MoveMap(Vector2 inputDelta)
         {
-            if (inputDelta.x < -0.01f && _tileImages[0, 0].TilePoint.x == 0)
-                return;
-            if (inputDelta.y < -0.01f && _tileImages[0, 0].TilePoint.y == 0)
-                return;
-            if (inputDelta.x > 0.01f && _tileImages[gridSize, 0].TilePoint.x == 1 << _tileImages[gridSize, 0].TilePoint.zoom)
-                return;
-            if (inputDelta.y > 0.01f && _tileImages[0, gridSize].TilePoint.y == 1 << _tileImages[0, gridSize].TilePoint.zoom)
+            if (IsGoingOutsideBounds(inputDelta)) 
                 return;
 
             foreach (MapCell tileImage in _tileImages)
@@ -70,6 +64,14 @@ namespace Unicar.UI.RidesScreen.View
                 Vector2Int distance = newClosestTile - _closestTile;
                 UpdateTiles(distance.x, distance.y);
             }
+        }
+
+        private bool IsGoingOutsideBounds(Vector2 inputDelta)
+        {
+            return inputDelta.x < 0f && _tileImages[0, 0].TilePoint.x == 0 ||
+                   inputDelta.y < 0f && _tileImages[0, 0].TilePoint.y == 0 || 
+                   inputDelta.x > 0f && _tileImages[gridSize - 1, 0].TilePoint.x == 1 << _tileImages[gridSize - 1, 0].TilePoint.zoom || 
+                   inputDelta.y > 0f && _tileImages[0, gridSize - 1].TilePoint.y == 1 << _tileImages[0, gridSize - 1].TilePoint.zoom;
         }
 
         public void AddZoom(float zoomOffset)
@@ -111,7 +113,7 @@ namespace Unicar.UI.RidesScreen.View
             }
         }
 
-        void UpdateTiles(int deltaX, int deltaY)
+        private void UpdateTiles(int deltaX, int deltaY)
         {
             float size = _tileImages[0, 0].Image.rectTransform.sizeDelta.x;
             
@@ -119,13 +121,13 @@ namespace Unicar.UI.RidesScreen.View
             {
                 for (int y = 0; y < gridSize; y++)
                 {
-                    _tileImages[0, y].Image.transform.localPosition = _tileImages[gridSize - 1, y].Image.transform.localPosition + new Vector3(deltaX, deltaY) * size;
+                    _tileImages[0, y].Image.transform.localPosition = _tileImages[gridSize - 1, y].Image.transform.localPosition + new Vector3(deltaX, 0) * size;
                     MapCell temporaryInitial = _tileImages[0, y];
 
                     for (int x = 0; x < gridSize - 1; x++)
                         _tileImages[x, y] = _tileImages[x + 1, y];
 
-                    temporaryInitial.SetTilePoint(temporaryInitial.TilePoint + new Vector2Int(deltaX, deltaY) * gridSize);
+                    temporaryInitial.SetTilePoint(temporaryInitial.TilePoint + new Vector2Int(deltaX, 0) * gridSize);
                     _tileImages[gridSize - 1, y] = temporaryInitial;
                 }
             }
@@ -133,13 +135,13 @@ namespace Unicar.UI.RidesScreen.View
             {
                 for (int y = 0; y < gridSize; y++)
                 {
-                    _tileImages[gridSize - 1, y].Image.transform.localPosition = _tileImages[0, y].Image.transform.localPosition + new Vector3(deltaX, deltaY) * size;
+                    _tileImages[gridSize - 1, y].Image.transform.localPosition = _tileImages[0, y].Image.transform.localPosition + new Vector3(deltaX, 0) * size;
                     MapCell temporaryInitial = _tileImages[gridSize - 1, y];
 
                     for (int x = gridSize - 1; x > 0; x--)
                         _tileImages[x, y] = _tileImages[x - 1, y];
 
-                    temporaryInitial.SetTilePoint(temporaryInitial.TilePoint + new Vector2Int(deltaX, deltaY) * gridSize);
+                    temporaryInitial.SetTilePoint(temporaryInitial.TilePoint + new Vector2Int(deltaX, 0) * gridSize);
                     _tileImages[0, y] = temporaryInitial;
                 }
             }
@@ -148,13 +150,13 @@ namespace Unicar.UI.RidesScreen.View
             {
                 for (int x = 0; x < gridSize; x++)
                 {
-                    _tileImages[x, 0].Image.transform.localPosition = _tileImages[x, gridSize - 1].Image.transform.localPosition + new Vector3(deltaX, -deltaY) * size;
+                    _tileImages[x, 0].Image.transform.localPosition = _tileImages[x, gridSize - 1].Image.transform.localPosition + new Vector3(0, -deltaY) * size;
                     MapCell temporaryInitial = _tileImages[x, 0];
 
                     for (int y = 0; y < gridSize - 1; y++)
                         _tileImages[x, y] = _tileImages[x, y + 1];
 
-                    temporaryInitial.SetTilePoint(temporaryInitial.TilePoint + new Vector2Int(deltaX, deltaY) * gridSize);
+                    temporaryInitial.SetTilePoint(temporaryInitial.TilePoint + new Vector2Int(0, deltaY) * gridSize);
                     _tileImages[x, gridSize - 1] = temporaryInitial;
                 }
             }
@@ -162,13 +164,13 @@ namespace Unicar.UI.RidesScreen.View
             {
                 for (int x = 0; x < gridSize; x++)
                 {
-                    _tileImages[x, gridSize - 1].Image.transform.localPosition = _tileImages[x, 0].Image.transform.localPosition + new Vector3(deltaX, -deltaY) * size;
+                    _tileImages[x, gridSize - 1].Image.transform.localPosition = _tileImages[x, 0].Image.transform.localPosition + new Vector3(0, -deltaY) * size;
                     MapCell temporaryInitial = _tileImages[x, gridSize - 1];
 
                     for (int y = gridSize - 1; y > 0; y--)
                         _tileImages[x, y] = _tileImages[x, y - 1];
 
-                    temporaryInitial.SetTilePoint(temporaryInitial.TilePoint + new Vector2Int(deltaX, deltaY) * gridSize);
+                    temporaryInitial.SetTilePoint(temporaryInitial.TilePoint + new Vector2Int(0, deltaY) * gridSize);
                     _tileImages[x, 0] = temporaryInitial;
                 }
             }
@@ -230,18 +232,12 @@ namespace Unicar.UI.RidesScreen.View
 
         private async UniTask<Texture2D> SpawnAndCacheMapTileAsync(TilePoint tilePoint)
         {
-            if (_cacheTextures.TryGetValue(tilePoint.zoom, out Dictionary<TilePoint, Texture2D> textures))
-            {
-                if(textures.TryGetValue(tilePoint, out Texture2D mapTile))
-                    return mapTile;
-            }
-            
+            if (_cacheTextures.TryGetValue(tilePoint, out Texture2D mapTile))
+                return mapTile;
+
             Texture2D map = await MapManager.GetMapFromCoordinate(tilePoint, tilePoint.zoom);
             
-            if (!_cacheTextures.ContainsKey(tilePoint.zoom))
-                _cacheTextures[tilePoint.zoom] = new Dictionary<TilePoint, Texture2D>();
-            
-            _cacheTextures[tilePoint.zoom][tilePoint] = map;
+            _cacheTextures[tilePoint] = map;
             return map;
         }
 

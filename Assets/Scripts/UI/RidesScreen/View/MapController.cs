@@ -1,6 +1,5 @@
 ﻿using Unicar.Inputs;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 
 namespace Unicar.UI.RidesScreen.View
@@ -8,13 +7,10 @@ namespace Unicar.UI.RidesScreen.View
     public class MapController : MonoBehaviour
     {
         [SerializeField] private MapDrawer mapDrawer;
-        [SerializeField] private float zoomUpdateSpeed = 0.5f;
         
         private MobileInputs _mobileInputs;
-        private bool _checkMove;
-        private bool _checkZoom;
-        private Vector2 _currentZoomTouch0Position;
-        private Vector2 _currentZoomTouch1Position;
+        private Vector2 _touch0StartPosition;
+        private Vector2 _touch1StartPosition;
         
         private void Awake()
         {
@@ -26,71 +22,31 @@ namespace Unicar.UI.RidesScreen.View
         {
             _mobileInputs.Dispose();
         }
-        
-        private void OnEnable()
-        {
-            _mobileInputs.Touch.Touch0.started += StartCheckingTouch;
-            _mobileInputs.Touch.Touch0.canceled += StopCheckingTouch;
-            _mobileInputs.Touch.Touch1.started += StartSecondTouch;
-            _mobileInputs.Touch.Touch1.canceled += StopSecondTouch;
-        }
-
-        private void OnDisable()
-        {
-            _mobileInputs.Touch.Touch0.started -= StartCheckingTouch;
-            _mobileInputs.Touch.Touch0.canceled -= StopCheckingTouch;
-            _mobileInputs.Touch.Touch1.started -= StartSecondTouch;
-            _mobileInputs.Touch.Touch1.canceled -= StopSecondTouch;
-        }
 
         private void Update()
         {
-            if(!_checkMove)
-                return;
-            
             TouchState touch0 = _mobileInputs.Touch.Touch0.ReadValue<TouchState>();
             
-            if (_checkZoom)
+            if(!touch0.isInProgress || !RectTransformUtility.RectangleContainsScreenPoint((RectTransform)mapDrawer.transform, touch0.position))
+                return;
+            
+            TouchState touch1 = _mobileInputs.Touch.Touch1.ReadValue<TouchState>();
+            
+            if (touch1.isInProgress)
             {
-                TouchState touch1 = _mobileInputs.Touch.Touch1.ReadValue<TouchState>();
-
-                float initialDistance = (_currentZoomTouch0Position - _currentZoomTouch1Position).magnitude;
+                Vector2 previousTouch0Position = touch0.position - touch0.delta;
+                Vector2 previousTouch1Position = touch1.position - touch1.delta;
+                
+                float initialDistance = (previousTouch0Position - previousTouch1Position).magnitude;
                 float finalDistance = (touch0.position - touch1.position).magnitude;
                 float differenceDistance = finalDistance - initialDistance;
 
-                if (Mathf.Abs(differenceDistance) > 5f)
-                {
-                    mapDrawer.AddZoom(differenceDistance);
-                    _currentZoomTouch0Position = touch0.position;
-                    _currentZoomTouch1Position = touch1.position;
-                }
+                mapDrawer.AddZoom((1f - 1f / differenceDistance) * Time.deltaTime);
             }
             else if (touch0.delta.sqrMagnitude > 10f)
             {
                 mapDrawer.MoveMap(touch0.delta);
             }
-        }
-
-        private void StartCheckingTouch(InputAction.CallbackContext context)
-        {
-            _currentZoomTouch0Position = context.ReadValue<TouchState>().startPosition;
-            _checkMove = true;
-        }
-        
-        private void StopCheckingTouch(InputAction.CallbackContext context)
-        {
-            _checkMove = false;
-        }
-        
-        private void StartSecondTouch(InputAction.CallbackContext context)
-        {
-            _currentZoomTouch1Position = context.ReadValue<TouchState>().startPosition;
-            _checkZoom = true;
-        }
-        
-        private void StopSecondTouch(InputAction.CallbackContext context)
-        {
-            _checkZoom = false;
         }
     }
 }

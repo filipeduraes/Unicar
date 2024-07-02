@@ -25,21 +25,21 @@ MonoBehaviour:
     FinalHour: 15:40
     CoursePeriod: 3
     IsBestRoute: 0
-  - RiderName: Lucas Santos
-    CourseName: Enfermagem
-    InitialHour: 15:10
-    FinalHour: 15:40
-    CoursePeriod: 3
+  - RiderName: Thiago Silva
+    CourseName: "Sistemas de Informa\xE7\xE3o"
+    InitialHour: 15:05
+    FinalHour: 15:45
+    CoursePeriod: 7
     IsBestRoute: 0
-  - RiderName: Lucas Santos
-    CourseName: Enfermagem
+  - RiderName: Mariana Costa
+    CourseName: "Qu\xEDmica"
     InitialHour: 15:10
-    FinalHour: 15:40
-    CoursePeriod: 3
+    FinalHour: 16:00
+    CoursePeriod: 2
     IsBestRoute: 0
-  - RiderName: Lucas Santos
-    CourseName: Enfermagem
-    InitialHour: 15:10
-    FinalHour: 15:40
+  - RiderName: Pedro Ribeiro
+    CourseName: "Sistemas de Informa\xE7\xE3o"
+    InitialHour: 15:30
+    FinalHour: 15:50
     CoursePeriod: 3
     IsBestRoute: 0

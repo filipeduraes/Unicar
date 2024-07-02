@@ -52,7 +52,7 @@ namespace Unicar.Inputs
                 {
                     ""name"": """",
                     ""id"": ""c22f99dc-ac91-4edf-a2b9-e754da03b8d3"",
-                    ""path"": ""<Touchscreen>/touch0"",
+                    ""path"": ""<Touchscreen>/primaryTouch"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
