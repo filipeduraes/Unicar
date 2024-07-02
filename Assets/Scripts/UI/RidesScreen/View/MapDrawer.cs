@@ -51,6 +51,15 @@ namespace Unicar.UI.RidesScreen.View
 
         public void MoveMap(Vector2 inputDelta)
         {
+            if (inputDelta.x < -0.01f && _tileImages[0, 0].TilePoint.x == 0)
+                return;
+            if (inputDelta.y < -0.01f && _tileImages[0, 0].TilePoint.y == 0)
+                return;
+            if (inputDelta.x > 0.01f && _tileImages[gridSize, 0].TilePoint.x == 1 << _tileImages[gridSize, 0].TilePoint.zoom)
+                return;
+            if (inputDelta.y > 0.01f && _tileImages[0, gridSize].TilePoint.y == 1 << _tileImages[0, gridSize].TilePoint.zoom)
+                return;
+
             foreach (MapCell tileImage in _tileImages)
                 tileImage.Image.rectTransform.localPosition += (Vector3) inputDelta;
 
