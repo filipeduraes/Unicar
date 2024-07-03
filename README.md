@@ -1,4 +1,4 @@
-#Unicar
+# Unicar
 
   Ao preencher a tela de registro, é feita uma validação básica dos dados. Se o nome não está vazio, se o email segue o regex da expressão “^[a-zA-Z0-9._%+-]+@ufvjm\.edu\.br$”, que determina que é um e-mail institucional da ufvjm (começa com qualquer coisa e termina com “@ufvjm.edu.br”). Além de verificar se a senha e a confirmação da senha são iguais. Após isso, esses dados são salvos em um arquivo serializado no formato JSON localmente, para que possa ser lido novamente ao fazer o login.
 
