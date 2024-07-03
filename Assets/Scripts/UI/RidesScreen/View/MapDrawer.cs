@@ -23,7 +23,7 @@ namespace Unicar.UI.RidesScreen.View
         [SerializeField] private bool enableMap = false;
         [SerializeField] private Vector2 scaleRange = new(0.8f, 1.2f);
 
-        private readonly Dictionary<TilePoint, Texture2D> _cacheTextures = new();
+        private readonly Dictionary<int, Dictionary<TilePoint, Texture2D>> _cacheTextures = new();
         private CancellationTokenSource _cancellationTokenSource;
         private MapCell[,] _tileImages;
         private Vector2Int _closestTile;
@@ -86,7 +86,7 @@ namespace Unicar.UI.RidesScreen.View
 
         private void ChangeZoomLevel(int zoomOffset)
         {
-            mapCenter.localScale = (zoomOffset < 0 ? scaleRange.y : scaleRange.x) * Vector2.one;
+            mapCenter.localScale = (zoomOffset < 0 ? scaleRange.y - 0.1f : scaleRange.x + 0.1f) * Vector2.one;
             
             int centerIndex = gridSize / 2;
             MapCell centerCell = _tileImages[centerIndex, centerIndex];
@@ -108,6 +108,8 @@ namespace Unicar.UI.RidesScreen.View
                         _tileImages[x, y].TilePoint = newInitialTilePoint + (new Vector2Int(x, y) - Vector2Int.one * centerIndex);
                 }
 
+                _cancellationTokenSource.Cancel();
+                
                 UniTask populateTask = PopulateMapTexturesAsync();
                 populateTask.AttachExternalCancellation(_cancellationTokenSource.Token);
             }
@@ -175,6 +177,8 @@ namespace Unicar.UI.RidesScreen.View
                 }
             }
 
+            _cancellationTokenSource.Cancel();
+            
             UniTask populateMapTask = PopulateMapTexturesAsync();
             populateMapTask.AttachExternalCancellation(_cancellationTokenSource.Token);
         }
@@ -206,7 +210,7 @@ namespace Unicar.UI.RidesScreen.View
         {
             if(!enableMap)
                 return;
-            
+
             UniTask[] populateTasks = new UniTask[_tileImages.GetLength(0) * _tileImages.GetLength(1)];
             int taskIndex = 0;
 
@@ -232,12 +236,18 @@ namespace Unicar.UI.RidesScreen.View
 
         private async UniTask<Texture2D> SpawnAndCacheMapTileAsync(TilePoint tilePoint)
         {
-            if (_cacheTextures.TryGetValue(tilePoint, out Texture2D mapTile))
-                return mapTile;
+            if (_cacheTextures.TryGetValue(tilePoint.zoom, out Dictionary<TilePoint, Texture2D> cache))
+            {
+                if(cache.TryGetValue(tilePoint, out Texture2D mapTile))
+                    return mapTile;
+            }
 
             Texture2D map = await MapManager.GetMapFromCoordinate(tilePoint, tilePoint.zoom);
+
+            if (!_cacheTextures.ContainsKey(tilePoint.zoom))
+                _cacheTextures[tilePoint.zoom] = new Dictionary<TilePoint, Texture2D>();
             
-            _cacheTextures[tilePoint] = map;
+            _cacheTextures[tilePoint.zoom][tilePoint] = map;
             return map;
         }
 

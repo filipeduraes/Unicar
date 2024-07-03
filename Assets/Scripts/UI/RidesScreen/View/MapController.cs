@@ -7,6 +7,7 @@ namespace Unicar.UI.RidesScreen.View
     public class MapController : MonoBehaviour
     {
         [SerializeField] private MapDrawer mapDrawer;
+        [SerializeField] private RectTransform controlsArea;
         
         private MobileInputs _mobileInputs;
         private Vector2 _touch0StartPosition;
@@ -27,7 +28,7 @@ namespace Unicar.UI.RidesScreen.View
         {
             TouchState touch0 = _mobileInputs.Touch.Touch0.ReadValue<TouchState>();
             
-            if(!touch0.isInProgress || !RectTransformUtility.RectangleContainsScreenPoint((RectTransform)mapDrawer.transform, touch0.position))
+            if(!touch0.isInProgress || !RectTransformUtility.RectangleContainsScreenPoint(controlsArea, touch0.position))
                 return;
             
             TouchState touch1 = _mobileInputs.Touch.Touch1.ReadValue<TouchState>();
@@ -37,11 +38,18 @@ namespace Unicar.UI.RidesScreen.View
                 Vector2 previousTouch0Position = touch0.position - touch0.delta;
                 Vector2 previousTouch1Position = touch1.position - touch1.delta;
                 
-                float initialDistance = (previousTouch0Position - previousTouch1Position).magnitude;
-                float finalDistance = (touch0.position - touch1.position).magnitude;
+                Vector2 normalizedPreviousTouch0Position = new(previousTouch0Position.x / Screen.width, previousTouch0Position.y / Screen.height);
+                Vector2 normalizedPreviousTouch1Position = new(previousTouch1Position.x / Screen.width, previousTouch1Position.y / Screen.height);
+                
+                Vector2 normalizedTouch0Position = new(touch0.position.x / Screen.width, touch0.position.y / Screen.height);
+                Vector2 normalizedTouch1Position = new(touch1.position.x / Screen.width, touch1.position.y / Screen.height);
+                
+                float initialDistance = (normalizedPreviousTouch0Position - normalizedPreviousTouch1Position).magnitude;
+                float finalDistance = (normalizedTouch0Position - normalizedTouch1Position).magnitude;
                 float differenceDistance = finalDistance - initialDistance;
 
-                mapDrawer.AddZoom((1f - 1f / differenceDistance) * Time.deltaTime);
+                if (Mathf.Abs(differenceDistance) > 0.01f)
+                    mapDrawer.AddZoom(differenceDistance * 5.0f);
             }
             else if (touch0.delta.sqrMagnitude > 10f)
             {
